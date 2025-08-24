@@ -78,8 +78,7 @@ a{ color: inherit; text-decoration: none; }
     background-color .15s ease,
     border-color .15s ease;
 }
-/* если добавишь иконку-лупу — задай её через background-image/position/size отдельно,
-   чтобы на :hover не затирать картинку */
+
 .search::placeholder{ color: #a0adba; }
 
 .search:hover{
