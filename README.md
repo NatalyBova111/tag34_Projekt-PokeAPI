@@ -6,4 +6,5 @@ Projekt PokéAPI
 <img width="1517" height="874" alt="image" src="https://github.com/user-attachments/assets/1b5d3322-5c95-4bdb-91f8-049059d05949" />
 
 
-<img width="1539" height="784" alt="image" src="https://github.com/user-attachments/assets/7c0aebfd-249b-4379-8b5d-ef1ad485e28f" />
+<img width="1599" height="714" alt="image" src="https://github.com/user-attachments/assets/1726a2f3-71d3-4376-b84a-b620a1cc2dc3" />
+
