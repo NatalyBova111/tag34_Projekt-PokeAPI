@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pokédex</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+</head>
+<body>
+  <header class="header">
+    <h1 class="brand" aria-label="Pokémon Type">
+      <img id="logo-main" class="logo" alt="" />
+      <img id="logo-type" class="logo-type" alt="" />
+    </h1>
+
+    <input
+      id="search"
+      class="search"
+      type="search"
+      placeholder="Search Pokémon"
+      aria-label="Search Pokémon"
+      autocomplete="off"
+      autocapitalize="off"
+      spellcheck="false"
+    />
+    <div id="type-filters" class="types"></div>
+  </header>
+
+  <main class="container">
+    <ul id="grid" class="grid"></ul>
+    <button id="more" class="more">Load more</button>
+  </main>
+
+  <!-- Modal (детали покемона) -->
+  <div id="modal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__panel" role="document">
+      <button class="modal__close" data-close aria-label="Close">×</button>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <script type="module" src="./src/main.ts"></script>
+</body>
+</html>

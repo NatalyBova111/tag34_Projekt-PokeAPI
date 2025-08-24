@@ -1,0 +1,453 @@
+/* ===== Base / Reset ===== */
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+
+:root{
+  --bg: #dfe8ec;             /* фон страницы */
+  --text: #203040;           /* основной цвет текста */
+  --muted: #708090;          /* приглушённый текст */
+  --card: #ffffff;           /* фон карточек */
+  --border: #e3e8f0;         /* рамки и разделители */
+  --shadow: 0 8px 24px rgba(25, 30, 45, .08);
+  --radius: 16px;
+  --accent: #6bb8ff;         /* цвет акцента/фокуса */
+  /* молочный градиент для превью/панелей */
+  --thumb-milk-1: #FFF8DC;
+  --thumb-milk-2: #FFF3C4;
+  --thumb-milk-3: #FFF9EE;
+  --empty-icon: url("./img/pokeball-pokemon-svgrepo-com.svg");
+}
+
+body{
+  margin: 0;
+  font: 500 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+}
+
+a{ color: inherit; text-decoration: none; }
+
+/* ===== Header / Branding ===== */
+.header{
+  max-width: 980px;
+  margin: 24px auto 8px;
+  padding: 0 16px;
+  display: grid;
+  gap: 16px;
+  justify-items: center;
+}
+
+.brand{
+  position: relative;
+  display: inline-block;
+  margin: 8px 0;
+}
+
+.logo{
+  display: block;
+  height: 96px;
+  width: auto;
+  object-fit: contain;
+}
+
+.logo-type{
+  position: absolute;
+  left: 50%;
+  top: 70%;
+  transform: translate(-50%, -50%);
+  height: 38%;
+  filter: drop-shadow(0 2px 0 rgba(0,0,0,.22));
+}
+
+/* ===== Search ===== */
+.search{
+  width: min(920px, 92vw);
+  padding: 14px 18px;
+  border-radius: 9999px;
+  background-color: #fff;                
+  border: 1px solid var(--border);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.7);
+  outline: none;
+  font-size: 18px;
+
+  /* «живость» как у type-pill */
+  transform: translateZ(0);
+  transition:
+    transform .15s ease,
+    box-shadow .15s ease,
+    background-color .15s ease,
+    border-color .15s ease;
+}
+/* если добавишь иконку-лупу — задай её через background-image/position/size отдельно,
+   чтобы на :hover не затирать картинку */
+.search::placeholder{ color: #a0adba; }
+
+.search:hover{
+  transform: translateY(-1px);
+  background-color: #fcfdff;             /* не шортхенд background — иконка не пропадёт */
+  border-color: rgba(0,0,0,.25);
+  box-shadow: 0 2px 10px rgba(0,0,0,.12), inset 0 1px 0 rgba(255,255,255,.7);
+}
+.search:focus{
+  transform: translateY(-1px);
+  border-color: var(--accent);
+  box-shadow:
+    0 0 0 3px #fff,                                     /* белое кольцо */
+    0 0 0 6px color-mix(in srgb, var(--accent) 55%, transparent),
+    0 8px 20px rgba(25,30,45,.12);
+}
+.search:active{ transform: translateY(0); }
+
+/* ===== Type filters ===== */
+.types{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  justify-content:center;
+  margin:14px 0 18px;
+}
+
+/* «пилюля» фильтра типа */
+.type-pill{
+  position: relative;              /* для подсветки через ::after */
+  --pill: #bbb;                    /* цвет приходит инлайном из JS */
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,.15);
+  background: color-mix(in srgb, var(--pill) 20%, #fff);
+  color:#243042;
+  font-weight: 800;
+  letter-spacing:.03em;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease, color .15s ease, border-color .15s ease;
+  box-shadow: inset 0 -2px 0 rgba(255,255,255,.4);
+}
+.type-pill:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 2px 10px rgba(0,0,0,.12);
+  border-color: rgba(0,0,0,.25);
+}
+.type-pill:focus-visible{
+  outline: none;
+  box-shadow: 0 0 0 3px #fff, 0 0 0 6px color-mix(in srgb, var(--pill) 55%, transparent);
+}
+/* активное состояние */
+.type-pill.is-active,
+.type-pill[aria-pressed="true"]{
+  background: var(--pill);
+  color:#fff;
+  text-shadow: 0 1px 0 rgba(0,0,0,.25);
+  border-color: rgba(0,0,0,.28);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(0,0,0,.22);
+}
+/* свечение вокруг активной */
+.type-pill.is-active::after,
+.type-pill[aria-pressed="true"]::after{
+  content:"";
+  position:absolute; inset:-4px;
+  border-radius:inherit; pointer-events:none;
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--pill) 50%, transparent),
+    0 0 16px color-mix(in srgb, var(--pill) 55%, transparent);
+}
+/* галочка слева у активной */
+.type-pill.is-active::before,
+.type-pill[aria-pressed="true"]::before{
+  content:"✓";
+  position:absolute; left:8px; top:50%;
+  transform: translateY(-50%);
+  font-weight:900; opacity:.9;
+}
+.type-pill.is-active,
+.type-pill[aria-pressed="true"]{
+  padding-left: 22px; /* место для галочки */
+}
+
+/* ===== Layout ===== */
+.container{
+  max-width: 980px;
+  margin: 8px auto 32px;
+  padding: 0 16px;
+}
+.grid{
+  list-style:none; margin:0; padding:0;
+  display:grid; gap:12px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+
+/* ===== Card ===== */
+.card{
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  display: grid;
+  grid-template-rows: 160px auto;
+}
+
+/* Превью-область карточки (один общий фон без дублирования правил) */
+.thumb{
+  display:flex; align-items:center; justify-content:center;
+  /* объединённый молочный + лёгкая голубая подсветка снизу */
+  background:
+    radial-gradient(220px 120px at 50% 10%, rgba(255,255,255,.55), transparent 60%),
+    radial-gradient(260px 160px at 50% 100%, rgba(107,184,255,.12), transparent 60%),
+    linear-gradient(180deg, var(--thumb-milk-1) 0%, var(--thumb-milk-2) 55%, var(--thumb-milk-3) 100%);
+}
+.thumb img{
+  max-width: 92%;
+  max-height: 150px;
+  height: auto;
+  object-fit: contain;
+}
+
+.meta{ padding: 12px 14px 14px; }
+.id{
+  display:inline-block;
+  font: 700 12px/1.2 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif;
+  color: var(--muted);
+  letter-spacing:.6px;
+}
+.name{
+  margin: 2px 0 8px;
+  font: 800 18px/1.25 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif;
+}
+
+.badges{
+  display:flex; flex-wrap:wrap; gap:6px;
+}
+/* Бейджи типов в КАРТОЧКАХ (мягкий фон + тёмный текст; если захочешь белый — скажи) */
+.badge{
+  --c: #ddd;
+  background: color-mix(in srgb, var(--c), #fff 70%);
+  border: 1px solid color-mix(in srgb, var(--c), #000 20%);
+  color: #203040;
+  border-radius: 9999px;
+  padding: 4px 10px;
+  font: 800 11px/1.1 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif;
+  letter-spacing:.2px;
+}
+
+/* ===== States (loading / empty / error) ===== */
+.loading, .empty, .error{
+  grid-column: 1 / -1;
+  border-radius: var(--radius);
+}
+
+/* компактная плашка загрузки — годится и для <li>, и для <div> */
+.loading{
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 14px 16px;
+  color: #6b7280;
+  background: #fff;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+.loading::before{
+  content: "";
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 2px solid #d3dbe6;             /* серый круг */
+  border-top-color: var(--accent);        /* акцентный сектор */
+  animation: spin .9s linear infinite;
+}
+
+
+/* ПУСТО: иконка + жёлтая плашка, иконка чуть «заходит» на плашку */
+.empty{
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;      /* плашка под иконкой */
+  align-items: center;
+  justify-content: center;
+  gap: 0;                      /* управляем расстоянием вручную */
+  min-height: 150px;
+  padding: 8px 0;
+
+  /* без внешней «карточки» */
+  background: transparent;
+  border: none;
+  box-shadow: none;
+
+  /* текст элемента прячем — подпись задаём в ::after */
+  color: transparent;
+  font-size: 0;
+}
+
+.empty::before{
+  content: "";
+  width: 80px; height: 80px; border-radius: 9999px;
+  position: relative;
+  z-index: 1;                  /* чтобы иконка была над плашкой */
+  background:
+    var(--empty-icon) no-repeat center / 48px 48px,                       /* файл из :root */
+    radial-gradient(22px 18px at 50% 30%, rgba(255,255,255,.6), transparent 70%),
+    linear-gradient(180deg, #fff 0%, #f4f7fb 100%);
+  border: 1px solid #e4e9f2;
+  box-shadow: inset 0 -2px 0 rgba(0,0,0,.06), 0 2px 8px rgba(0,0,0,.08);
+}
+
+.empty::after{
+  content: "No Pokémon found";
+  display: inline-block;
+  margin-top: -10px;           /* ключ: иконка «наезжает» на плашку */
+  padding: 10px 16px 11px;
+  border-radius: 9999px;
+  font-size: 16px;             /* возвращаем текст */
+  font-weight: 800;
+  letter-spacing: .02em;
+  color: #4a3b00;
+
+  /* простой светло-жёлтый фон без градиента */
+  background-color: #FFF3BF;
+  border: 1px solid #E8D889;
+  box-shadow: inset 0 -2px 0 rgba(255,255,255,.25), 0 2px 8px rgba(0,0,0,.08);
+}
+
+@media (max-width: 520px){
+  .empty{ min-height: 130px; }
+  .empty::before{ width: 56px; height: 56px; background-size: 32px 32px, auto, auto; }
+  .empty::after{ font-size: 15px; padding: 9px 14px; margin-top: -8px; }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* мягкая ошибка */
+.error{
+  padding: 16px 18px;
+  color: #b42318;
+  background: linear-gradient(180deg, #fff5f5 0%, #ffecec 100%);
+  border: 1px solid #f0c4c4;
+  box-shadow: 0 2px 10px rgba(180,35,24,.08);
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ===== Modal (details) ===== */
+.modal.hidden { display: none; }
+.modal{
+  position: fixed; inset: 0;
+  z-index: 1000;
+  display: grid; place-items: center;
+}
+.modal__backdrop{
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,.45);
+  backdrop-filter: blur(2px);
+}
+.modal__panel{
+  position: relative;
+  max-width: 760px;
+  width: min(92vw, 760px);
+  background: #fff;
+  color: #1f2937;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.35);
+  padding: 20px 20px 16px;
+}
+.modal__close{
+  position: absolute; top: 8px; right: 10px;
+  width: 34px; height: 34px;
+  border: none; border-radius: 50%;
+  background: #f3f4f6; color:#111; font-size: 20px;
+  cursor: pointer;
+}
+.modal__close:hover{ background:#e5e7eb; }
+
+.detail-head{
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 16px;
+  align-items: center;
+}
+.detail-head img{
+  width: 100%; height: auto; object-fit: contain;
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,.12));
+}
+.detail-title{ display:flex; align-items: baseline; gap: 10px; }
+.detail-title .name{ font-size: 28px; font-weight: 800; }
+.detail-title .id{ color:#6b7280; font-weight:600; }
+
+.detail-tags{ display:flex; gap:8px; margin:6px 0 10px; flex-wrap:wrap; }
+/* Плашки типов ТОЛЬКО в модалке — белый текст на цвете типа */
+.detail-tag{
+  --c: #666;                                /* придёт инлайном из TS */
+  background: var(--c);                     /* чистый цвет типа */
+  color: #fff;                              /* белый текст */
+  border: 1px solid color-mix(in srgb, var(--c), #000 30%);
+  border-radius: 999px;
+  padding: .3rem .6rem;
+  font-size: .85rem;
+  font-weight: 700;
+  text-shadow: 0 1px 0 rgba(0,0,0,.18);
+  box-shadow: inset 0 -2px 0 rgba(255,255,255,.12);
+}
+
+.detail-grid{
+  display:grid; gap:12px;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  margin-top: 8px;
+}
+/* панели Basics/Stats — тот же молочный градиент */
+.detail-card{
+  position: relative;
+  border-radius:12px;
+  padding:12px 14px;
+  border: 1px solid #eef0f3;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 1px 2px rgba(16,24,40,.06);
+  background:
+    radial-gradient(220px 120px at 50% 10%, rgba(255,255,255,.55), transparent 60%),
+    linear-gradient(180deg, var(--thumb-milk-1) 0%, var(--thumb-milk-2) 55%, var(--thumb-milk-3) 100%);
+}
+.detail-card h4{
+  margin:.2rem 0 .4rem; font-size: .95rem; color:#374151;
+}
+
+.stat-bar{
+  height:8px; border-radius:999px; background:#e5e7eb;
+  overflow:hidden; position:relative; margin-top:4px;
+}
+.stat-bar > b{
+  position:absolute; left:0; top:0; bottom:0;
+  width: var(--w,0%); background:#60a5fa; /* голубая полоса */
+}
+
+/* курсор-указатель для карточки */
+.card{ cursor: pointer; }
+.card .thumb{ user-select: none; }
+
+/* ===== Fallback «Load more» button (reserve) ===== */
+.more{
+  display:none;
+  margin: 16px auto 0;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background:#fff;
+  cursor:pointer;
+}
+.more.is-visible{ display:block; }
+.more[disabled]{ opacity:.6; cursor:default; }
+
+/* ===== Responsive ===== */
+@media (max-width: 520px){
+  .logo{ height: 78px; }
+  .logo-type{ height: 40%; top: 52%; }
+  .search{ font-size: 16px; }
+  .empty{ justify-content:center; text-align:center; gap:10px; }
+}
