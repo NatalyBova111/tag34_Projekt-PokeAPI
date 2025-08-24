@@ -188,7 +188,7 @@ a{ color: inherit; text-decoration: none; }
   grid-template-rows: 160px auto;
 }
 
-/* Превью-область карточки (один общий фон без дублирования правил) */
+/* Превью-область карточки  */
 .thumb{
   display:flex; align-items:center; justify-content:center;
   /* объединённый молочный + лёгкая голубая подсветка снизу */
@@ -219,7 +219,7 @@ a{ color: inherit; text-decoration: none; }
 .badges{
   display:flex; flex-wrap:wrap; gap:6px;
 }
-/* Бейджи типов в КАРТОЧКАХ (мягкий фон + тёмный текст; если захочешь белый — скажи) */
+/* Бейджи типов в КАРТОЧКАХ  */
 .badge{
   --c: #ddd;
   background: color-mix(in srgb, var(--c), #fff 70%);
@@ -237,7 +237,7 @@ a{ color: inherit; text-decoration: none; }
   border-radius: var(--radius);
 }
 
-/* компактная плашка загрузки — годится и для <li>, и для <div> */
+/* компактная плашка загрузки  */
 .loading{
   display: flex; align-items: center; justify-content: center; gap: 10px;
   padding: 14px 16px;
@@ -262,11 +262,9 @@ a{ color: inherit; text-decoration: none; }
   flex-direction: column;      /* плашка под иконкой */
   align-items: center;
   justify-content: center;
-  gap: 0;                      /* управляем расстоянием вручную */
+  gap: 0;                      
   min-height: 150px;
   padding: 8px 0;
-
-  /* без внешней «карточки» */
   background: transparent;
   border: none;
   box-shadow: none;
@@ -299,8 +297,6 @@ a{ color: inherit; text-decoration: none; }
   font-weight: 800;
   letter-spacing: .02em;
   color: #4a3b00;
-
-  /* простой светло-жёлтый фон без градиента */
   background-color: #FFF3BF;
   border: 1px solid #E8D889;
   box-shadow: inset 0 -2px 0 rgba(255,255,255,.25), 0 2px 8px rgba(0,0,0,.08);
@@ -311,18 +307,6 @@ a{ color: inherit; text-decoration: none; }
   .empty::before{ width: 56px; height: 56px; background-size: 32px 32px, auto, auto; }
   .empty::after{ font-size: 15px; padding: 9px 14px; margin-top: -8px; }
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
